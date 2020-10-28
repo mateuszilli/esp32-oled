@@ -72,7 +72,7 @@ void task_dht(void *pvParameters) {
             ESP_LOGE(TAG, "Could not read data from sensor");
         }
 
-        vTaskDelay(2000 / portTICK_PERIOD_MS);
+        vTaskDelay(500 / portTICK_PERIOD_MS);
     }
 }
 
@@ -131,10 +131,10 @@ void app_main(void) {
     gpio_pad_select_gpio(ECHO);
     gpio_set_direction(ECHO, GPIO_MODE_INPUT);
 
-    bufferTemperature = xQueueCreate(5,sizeof(uint16_t));
-    bufferDistance = xQueueCreate(5,sizeof(uint16_t));
+    bufferTemperature = xQueueCreate(5, sizeof(uint16_t));
+    bufferDistance = xQueueCreate(5, sizeof(uint16_t));
 
     xTaskCreate(task_ultrasonic, "task_ultrasonic", configMINIMAL_STACK_SIZE * 3, NULL, 5, NULL);
     xTaskCreate(task_dht, "task_dht", configMINIMAL_STACK_SIZE * 3, NULL, 5, NULL);
-    xTaskCreate(task_oled, "task_oled", configMINIMAL_STACK_SIZE * 3, NULL, 2, NULL);
+    xTaskCreate(task_oled, "task_oled", 2048, NULL, 2, NULL);
 }
